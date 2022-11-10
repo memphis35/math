@@ -28,9 +28,7 @@ public class MatrixBuilder {
     }
 
     public Matrix buildAsFloatMatrix() {
-        final double[][] matrix = IntStream.range(0, this.floats.size() - 1)
-                .mapToObj(this.floats::get)
-                .toArray(double[][]::new);
+        final double[][] matrix = this.floats.toArray(double[][]::new);
         //TODO create Float-based Matrix implementation
         return null;
     }

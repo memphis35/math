@@ -3,7 +3,6 @@ package info.memphis.math;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.IntStream;
 
 public class MatrixBuilder {
 
@@ -25,6 +24,11 @@ public class MatrixBuilder {
     public Matrix buildAsIntegerMatrix() {
         final long[][] matrix = this.integers.toArray(long[][]::new);
         return new IntegerMatrix(matrix);
+    }
+
+    public Matrix buildAsConcurrentIntegerMatrix() {
+        final long[][] matrix = this.integers.toArray(long[][]::new);
+        return new ConcurrentIntegerMatrix(matrix);
     }
 
     public Matrix buildAsFloatMatrix() {

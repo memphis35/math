@@ -3,10 +3,14 @@ package info.memphis.math;
 import info.memphis.exception.IncorrectMatrixSizeException;
 import info.memphis.exception.WrongOperationExeption;
 
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 public class IntegerMatrix implements Matrix {
@@ -50,6 +54,33 @@ public class IntegerMatrix implements Matrix {
             }
         }
         return new IntegerMatrix(result);
+    }
+
+    @Override
+    public Matrix multiply(Matrix matrix) {
+        if (this.columns() != matrix.rows()) {
+            final String msg = String.format(
+                    "Matrices are not met the conditions. Matrix A columns: %d, matrix B rows: %d",
+                    this.columns(), matrix.rows());
+            throw new ArithmeticException(msg);
+        }
+        final MatrixBuilder builder = new MatrixBuilder();
+        for (int r = 0; r < this.rows(); r++) {
+            final Number[] thisRow = row(r);
+            final long[] newRow = new long[matrix.columns()];
+            for (int c = 0; c < matrix.columns(); c++) {
+                final long sum = this.multiplyRowByColumn(thisRow, matrix.column(c)).longValue();
+                newRow[c] = sum;
+            }
+            builder.addIntegerRow(newRow);
+        }
+        return builder.buildAsIntegerMatrix();
+    }
+
+    private Number multiplyRowByColumn(Number[] column, Number[] row) {
+        return IntStream.range(0, column.length)
+                .mapToLong(i -> column[i].longValue() * row[i].longValue())
+                .sum();
     }
 
     @Override
@@ -98,6 +129,20 @@ public class IntegerMatrix implements Matrix {
     }
 
     @Override
+    public Number[] row(int index) {
+        return LongStream.of(this.matrix[index])
+                .boxed()
+                .toArray(Number[]::new);
+    }
+
+    @Override
+    public Number[] column(int index) {
+        return Arrays.stream(this.matrix)
+                .map(arr -> arr[index])
+                .toArray(Number[]::new);
+    }
+
+    @Override
     public Number element(int row, int column) {
         return this.matrix[row][column];
     }
@@ -129,5 +174,25 @@ public class IntegerMatrix implements Matrix {
         return Stream.of(this.matrix)
                 .map(Arrays::toString)
                 .collect(Collectors.joining(",\n"));
+    }
+
+    public static void main(String[] args) {
+        Random random = new Random();
+        MatrixBuilder builder = new MatrixBuilder();
+        IntStream.range(0, 2500).forEach(index -> {
+            long[] row = IntStream.range(0, 2500)
+                    .mapToLong(i -> random.nextLong(-100_000, 100_000))
+                    .toArray();
+            builder.addIntegerRow(row);
+        });
+        Matrix first = builder.buildAsConcurrentIntegerMatrix();
+        Matrix second = builder.buildAsConcurrentIntegerMatrix();
+        System.out.println("Start");
+        final long start = System.currentTimeMillis();
+        Matrix result = first.multiply(second);
+        final long end = System.currentTimeMillis();
+        System.out.println(result.element(0, 0));
+        System.out.println(result.element(100, 100));
+        System.out.println(Duration.of(end - start, ChronoUnit.MILLIS).getSeconds() + " seconds");
     }
 }

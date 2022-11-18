@@ -237,4 +237,18 @@ class IntegerMatrixTest {
         // Then
         Assertions.assertEquals(4, actual);
     }
+
+    @Test
+    void whenMultiplyMatrices_thenSuccess() {
+        // Given
+        final Matrix first = new IntegerMatrix(new long[][]{{2, 3, 4}, {1, 0, 0}});
+        final Matrix second = new IntegerMatrix(new long[][]{{0, 1000}, {1, 100}, {0, 10}});
+        final Matrix expected = new IntegerMatrix(new long[][]{{3, 2340}, {0, 1000}});
+
+        // When
+        final Matrix actual = first.multiply(second);
+
+        // Then
+        Assertions.assertEquals(expected, actual);
+    }
 }

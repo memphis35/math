@@ -6,6 +6,8 @@ public interface Matrix {
 
     Matrix scalarMultiply(int multiplier);
 
+    Matrix multiply(Matrix matrix);
+
     Matrix transpose();
 
     boolean isRowVector();
@@ -16,6 +18,10 @@ public interface Matrix {
 
     int rows();
     int columns();
+
+    Number[] row(int index);
+
+    Number[] column(int index);
 
     Number element(int row, int column);
 }

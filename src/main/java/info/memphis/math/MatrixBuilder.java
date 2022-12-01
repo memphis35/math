@@ -23,12 +23,7 @@ public class MatrixBuilder {
 
     public Matrix buildAsIntegerMatrix() {
         final long[][] matrix = this.integers.toArray(long[][]::new);
-        return new IntegerMatrix(matrix);
-    }
-
-    public Matrix buildAsConcurrentIntegerMatrix() {
-        final long[][] matrix = this.integers.toArray(long[][]::new);
-        return new ConcurrentIntegerMatrix(matrix);
+        return new IntegerMatrixImpl(matrix);
     }
 
     public Matrix buildAsFloatMatrix() {

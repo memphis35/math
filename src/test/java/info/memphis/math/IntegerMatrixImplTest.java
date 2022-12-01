@@ -6,12 +6,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
-class IntegerMatrixTest {
+class IntegerMatrixImplTest {
 
     @Test
     void givenNullValue_whenCreatingMatrix_thenFailed() {
         // When
-        final Executable executable = () -> new IntegerMatrix(null);
+        final Executable executable = () -> new IntegerMatrixImpl(null);
 
         // Then
         final NullPointerException exception = Assertions.assertThrows(NullPointerException.class, executable);
@@ -21,7 +21,7 @@ class IntegerMatrixTest {
     @Test
     void givenRowNullValue_whenCreatingMatrix_thenFailed() {
         // When
-        final Executable executable = () -> new IntegerMatrix(new long[][]{{1, 2, 3}, null});
+        final Executable executable = () -> new IntegerMatrixImpl(new long[][]{{1, 2, 3}, null});
 
         // Then
         final NullPointerException exception = Assertions.assertThrows(NullPointerException.class, executable);
@@ -31,7 +31,7 @@ class IntegerMatrixTest {
     @Test
     void givenEmptyArrayValue_whenCreatingMatrix_thenFailed() {
         // When
-        final Executable executable = () -> new IntegerMatrix(new long[0][42]);
+        final Executable executable = () -> new IntegerMatrixImpl(new long[0][42]);
 
         // Then
         final String expectedMsg = "Matrix should have at least one row";
@@ -41,7 +41,7 @@ class IntegerMatrixTest {
     @Test
     void givenEmptyRowValue_whenCreatingMatrix_thenFailed() {
         // When
-        final Executable executable = () -> new IntegerMatrix(new long[][]{{}, {}});
+        final Executable executable = () -> new IntegerMatrixImpl(new long[][]{{}, {}});
 
         // Then
         final String expectedMsg = "All rows should have the same length and contain at least one element";
@@ -51,7 +51,7 @@ class IntegerMatrixTest {
     @Test
     void givenRowsWithDifferentLengths_whenCreatingMatrix_thenFailed() {
         // When
-        final Executable executable = () -> new IntegerMatrix(new long[][]{{1, 2, 3}, {4}, {5, 6, 7}});
+        final Executable executable = () -> new IntegerMatrixImpl(new long[][]{{1, 2, 3}, {4}, {5, 6, 7}});
 
         // Then
         final String expectedMsg = "All rows should have the same length and contain at least one element";
@@ -63,9 +63,9 @@ class IntegerMatrixTest {
     @Test
     void givenTheSameSizedMatrices_whenAdd_thenSuccess() {
         // Given
-        final Matrix first = new IntegerMatrix(new long[][]{{1, 2, 3}, {4, 5, 6}});
-        final Matrix second = new IntegerMatrix(new long[][]{{7, 8, 9}, {10, 11, 12}});
-        final Matrix expected = new IntegerMatrix(new long[][]{{8, 10, 12}, {14, 16, 18}});
+        final IntegerMatrix first = new IntegerMatrixImpl(new long[][]{{1, 2, 3}, {4, 5, 6}});
+        final IntegerMatrix second = new IntegerMatrixImpl(new long[][]{{7, 8, 9}, {10, 11, 12}});
+        final Matrix expected = new IntegerMatrixImpl(new long[][]{{8, 10, 12}, {14, 16, 18}});
 
         // When
         final Matrix actual = first.add(second);
@@ -77,8 +77,8 @@ class IntegerMatrixTest {
     @Test
     void givenDifferentSizedMatrices_whenAdd_thenSuccess() {
         // Given
-        final Matrix first = new IntegerMatrix(new long[][]{{1, 2, 3, 4}, {4, 5, 6, 8}});
-        final Matrix second = new IntegerMatrix(new long[][]{{7, 8, 9}, {10, 11, 12}});
+        final IntegerMatrix first = new IntegerMatrixImpl(new long[][]{{1, 2, 3, 4}, {4, 5, 6, 8}});
+        final IntegerMatrix second = new IntegerMatrixImpl(new long[][]{{7, 8, 9}, {10, 11, 12}});
 
         // When
         final Executable executable = () -> first.add(second);
@@ -91,8 +91,8 @@ class IntegerMatrixTest {
     @Test
     void whenScalarMultiply_thenSuccess() {
         // Given
-        final Matrix matrix = new IntegerMatrix(new long[][]{{1, 2, 3, 4}, {5, 6, 7, 8}});
-        final Matrix expected = new IntegerMatrix(new long[][]{{3, 6, 9, 12}, {15, 18, 21, 24}});
+        final Matrix matrix = new IntegerMatrixImpl(new long[][]{{1, 2, 3, 4}, {5, 6, 7, 8}});
+        final Matrix expected = new IntegerMatrixImpl(new long[][]{{3, 6, 9, 12}, {15, 18, 21, 24}});
 
         // When
         final Matrix actual = matrix.scalarMultiply(3);
@@ -104,8 +104,8 @@ class IntegerMatrixTest {
     @Test
     void givenRectangularMatrix_whenTranspose_thenSuccess() {
         // Given
-        final Matrix matrix = new IntegerMatrix(new long[][]{{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}});
-        final Matrix expected = new IntegerMatrix(new long[][]{{1, 5, 9}, {2, 6, 10}, {3, 7, 11}, {4, 8, 12}});
+        final Matrix matrix = new IntegerMatrixImpl(new long[][]{{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12}});
+        final Matrix expected = new IntegerMatrixImpl(new long[][]{{1, 5, 9}, {2, 6, 10}, {3, 7, 11}, {4, 8, 12}});
 
         // When
         final Matrix actual = matrix.transpose();
@@ -119,7 +119,7 @@ class IntegerMatrixTest {
     @Test
     void givenRowVectorMatrix_whenCallIsRowVector_thenSuccess() {
         // Given
-        final Matrix matrix = new IntegerMatrix(new long[][]{{1, 2, 3, 4, 5}});
+        final Matrix matrix = new IntegerMatrixImpl(new long[][]{{1, 2, 3, 4, 5}});
 
         // When
         final boolean actual = matrix.isRowVector();
@@ -131,7 +131,7 @@ class IntegerMatrixTest {
     @Test
     void givenNonRowVectorMatrix_whenCallIsRowVector_thenFailed() {
         // Given
-        final Matrix matrix = new IntegerMatrix(new long[][]{{1, 2}, {6, 7}});
+        final Matrix matrix = new IntegerMatrixImpl(new long[][]{{1, 2}, {6, 7}});
 
         // When
         final boolean actual = matrix.isRowVector();
@@ -143,7 +143,7 @@ class IntegerMatrixTest {
     @Test
     void givenColumnVectorMatrix_whenCallIsColumnVector_thenSuccess() {
         // Given
-        final Matrix matrix = new IntegerMatrix(new long[][]{{1}, {2}, {3}, {4}});
+        final Matrix matrix = new IntegerMatrixImpl(new long[][]{{1}, {2}, {3}, {4}});
 
         // When
         final boolean actual = matrix.isColumnVector();
@@ -155,7 +155,7 @@ class IntegerMatrixTest {
     @Test
     void givenNonColumnVectorMatrix_whenCallIsColumnVector_thenSuccess() {
         // Given
-        final Matrix matrix = new IntegerMatrix(new long[][]{{1, 2}, {2, 3}, {3, 4}, {4, 5}});
+        final Matrix matrix = new IntegerMatrixImpl(new long[][]{{1, 2}, {2, 3}, {3, 4}, {4, 5}});
 
         // When
         final boolean actual = matrix.isColumnVector();
@@ -167,7 +167,7 @@ class IntegerMatrixTest {
     @Test
     void givenSquareMatrix_whenCallIsSquareMatrix_thenSuccess() {
         // Given
-        final Matrix matrix = new IntegerMatrix(new long[][]{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}});
+        final Matrix matrix = new IntegerMatrixImpl(new long[][]{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}});
 
         // When
         final boolean actual = matrix.isSquareMatrix();
@@ -179,7 +179,7 @@ class IntegerMatrixTest {
     @Test
     void givenNonSquareMatrix_whenCallIsSquareMatrix_thenFailed() {
         // Given
-        final Matrix matrix = new IntegerMatrix(new long[][]{{1, 2}, {4, 5}, {7, 8}});
+        final Matrix matrix = new IntegerMatrixImpl(new long[][]{{1, 2}, {4, 5}, {7, 8}});
 
         // When
         final boolean actual = matrix.isSquareMatrix();
@@ -191,8 +191,8 @@ class IntegerMatrixTest {
     @Test
     void givenTheSameSizedMatrices_whenCallIsTheSameSizeAs_thenSuccess() {
         // Given
-        final Matrix first = new IntegerMatrix(new long[][]{{1, 2}, {3, 4}, {5, 6}});
-        final Matrix second = new IntegerMatrix(new long[][]{{42, 54}, {43, 32}, {35, 13}});
+        final Matrix first = new IntegerMatrixImpl(new long[][]{{1, 2}, {3, 4}, {5, 6}});
+        final Matrix second = new IntegerMatrixImpl(new long[][]{{42, 54}, {43, 32}, {35, 13}});
 
         // When
         final boolean actual = first.isTheSameSizeAs(second);
@@ -204,8 +204,8 @@ class IntegerMatrixTest {
     @Test
     void givenDifferentSizedMatrices_whenCallIsTheSameSizeAs_thenFailed() {
         // Given
-        final Matrix first = new IntegerMatrix(new long[][]{{1, 2}, {3, 4}, {5, 6}});
-        final Matrix second = new IntegerMatrix(new long[][]{{42, 54}, {43, 32}, {35, 13}});
+        final Matrix first = new IntegerMatrixImpl(new long[][]{{1, 2}, {3, 4}, {5, 6}});
+        final Matrix second = new IntegerMatrixImpl(new long[][]{{42, 54}, {43, 32}, {35, 13}});
 
         // When
         final boolean actual = first.isTheSameSizeAs(second);
@@ -217,7 +217,7 @@ class IntegerMatrixTest {
     @Test
     void whenCallRows_thenSuccess() {
         // Given
-        final Matrix matrix = new IntegerMatrix(new long[][]{{1, 2}, {3, 4}, {5, 6}});
+        final Matrix matrix = new IntegerMatrixImpl(new long[][]{{1, 2}, {3, 4}, {5, 6}});
 
         // When
         final long actual = matrix.rows();
@@ -229,7 +229,7 @@ class IntegerMatrixTest {
     @Test
     void whenCallColumns_thenSuccess() {
         // Given
-        final Matrix matrix = new IntegerMatrix(new long[][]{{1, 2, 3, 4}, {3, 4, 5, 6}, {5, 6, 7, 8}});
+        final Matrix matrix = new IntegerMatrixImpl(new long[][]{{1, 2, 3, 4}, {3, 4, 5, 6}, {5, 6, 7, 8}});
 
         // When
         final long actual = matrix.columns();
@@ -241,9 +241,9 @@ class IntegerMatrixTest {
     @Test
     void whenMultiplyMatrices_thenSuccess() {
         // Given
-        final Matrix first = new IntegerMatrix(new long[][]{{2, 3, 4}, {1, 0, 0}});
-        final Matrix second = new IntegerMatrix(new long[][]{{0, 1000}, {1, 100}, {0, 10}});
-        final Matrix expected = new IntegerMatrix(new long[][]{{3, 2340}, {0, 1000}});
+        final IntegerMatrix first = new IntegerMatrixImpl(new long[][]{{2, 3, 4}, {1, 0, 0}});
+        final IntegerMatrix second = new IntegerMatrixImpl(new long[][]{{0, 1000}, {1, 100}, {0, 10}});
+        final Matrix expected = new IntegerMatrixImpl(new long[][]{{3, 2340}, {0, 1000}});
 
         // When
         final Matrix actual = first.multiply(second);

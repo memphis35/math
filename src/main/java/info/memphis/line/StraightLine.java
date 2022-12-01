@@ -6,14 +6,18 @@ import info.memphis.point.RealPlanePoint;
 public class StraightLine implements Line {
     private final Point first;
     private final Point second;
+
+    private final double length;
+
     public StraightLine(Point first, Point second) {
         this.first = first;
         this.second = second;
+        this.length = first.distanceTo(second);
     }
 
     @Override
     public double length() {
-        return first.distanceTo(second);
+        return this.length;
     }
 
     @Override

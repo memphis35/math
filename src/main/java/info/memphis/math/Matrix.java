@@ -4,9 +4,9 @@ public interface Matrix {
 
     Matrix add(Matrix matrix);
 
-    Matrix scalarMultiply(int multiplier);
-
     Matrix multiply(Matrix matrix);
+
+    Matrix scalarMultiply(int multiplier);
 
     Matrix transpose();
 
@@ -18,10 +18,4 @@ public interface Matrix {
 
     int rows();
     int columns();
-
-    Number[] row(int index);
-
-    Number[] column(int index);
-
-    Number element(int row, int column);
 }

@@ -8,7 +8,7 @@ class MatrixBuilderTest {
     @Test
     void buildAsIntegerMatrix() {
         // Given
-        final Matrix expected = new IntegerMatrix(new long[][]{{1, 2}, {3, 4}, {5, 6}});
+        final Matrix expected = new IntegerMatrixImpl(new long[][]{{1, 2}, {3, 4}, {5, 6}});
         MatrixBuilder builder = new MatrixBuilder();
 
         // When
